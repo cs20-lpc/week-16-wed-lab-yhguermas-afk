@@ -1,15 +1,27 @@
 #include "GraphMatrix.hpp"
 
-GraphMatrix::GraphMatrix(int numV, GType type) {
-    // TODO
+GraphMatrix::GraphMatrix(int numV, GType type) : Graph(numV, 0, type) {
+    adjMatrix = new bool*[numV];
+    for (int i = 0; i < numV; i++) {
+        adjMatrix[i] = new bool[numV];
+        for (int j = 0; j < numV; j++) {
+            adjMatrix[i][j] = false;
+        }
+    }
 }
 
 GraphMatrix::~GraphMatrix() {
-    // TODO
+    for (int i = 0; i < v; i++) {
+        delete[] adjMatrix[i];
+    }
+    delete[] adjMatrix;
 }
 
 bool GraphMatrix::isEdge(int i, int j) const {
-    // TODO
+    if (i < 0 || i >= v || j < 0 || j >= v) {
+        return false;
+    }
+    return adjMatrix[i][j];
 }
 
 ostream& GraphMatrix::print(ostream& os) const {
@@ -37,5 +49,11 @@ ostream& GraphMatrix::print(ostream& os) const {
 }
 
 void GraphMatrix::toggleEdge(int i, int j) {
-    // TODO
+    if (i < 0 || i >= v || j < 0 || j >= v) {
+        return;
+    }
+    adjMatrix[i][j] = !adjMatrix[i][j];
+    if (graphType == UNDIRECTED) {
+        adjMatrix[j][i] = adjMatrix[i][j];
+    }
 }
